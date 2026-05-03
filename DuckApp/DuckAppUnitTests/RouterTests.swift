@@ -298,12 +298,28 @@ struct RouterDeepLinkTests {
         #expect(router.selectedTab == .settingsTab)
     }
 
-    @Test @MainActor func deepLink_navigatesAfterDelay() async throws {
+    @Test @MainActor func deepLink_navigatesAfterDelay() async {
         let router = Router()
+        router.deepLinkDelay = .zero
 
         router.deepLink(to: .settingsTab, route: .detail(item: "Z"))
 
-        try await Task.sleep(for: .milliseconds(100))
+        /// After calling deep​Link(), the navigate Task is scheduled but hasn't run yet. We need to give it a chance to execute.
+        /// Task.yield() immediately gives up control so pending tasks can run. No waiting, no timing. It's saying "I'm done for now, let the next task in line go."
+        /// 1. deep​Link() creates a task that wants to call navigate()
+        /// 2. That task is waiting in line
+        /// 3. await ​Task​.yield() says "let that task go first"
+        /// 4. The navigate task runs
+        /// 5. Then we check if it worked
+        
+        /// Any async function runs inside a task automatically -- Swift creates one behind the scenes.
+        /// You don't see a Task { } wrapper because the Swift Testing framework handles that for you when it sees async on the test function.
+        /// So there are two tasks in play:
+        /// Implicit task -- created by Swift Testing to run your async test function
+        /// Explicit task -- the Task { @​Main​Actor in } you wrote inside deep​Link()
+        /// await ​Task​.yield() pauses the implicit one so the explicit one can run.
+        
+        await Task.yield()
         #expect(router.settingsTabPath.count == 1)
     }
 }

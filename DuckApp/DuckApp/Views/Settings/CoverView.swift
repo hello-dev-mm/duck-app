@@ -1,5 +1,5 @@
 //
-//  AppCoverView.swift
+//  CoverView.swift
 //  DuckApp
 //
 //  Created by Mariana Mendes on 03/05/2026.

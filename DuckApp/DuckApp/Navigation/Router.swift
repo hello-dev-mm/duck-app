@@ -33,6 +33,9 @@ class Router {
     
     /// Navigation Path for the full screen cover
     var coverPath = NavigationPath()
+
+    /// Delay before pushing a route after a tab switch. Injectable for testing.
+    var deepLinkDelay: Duration = .milliseconds(50)
     
     /// Helper to get the path for the currently active tab
     private var currentPath: NavigationPath {
@@ -94,7 +97,7 @@ class Router {
         Task { @MainActor in /// @​Main​Actor is Swift's way of saying "this code must run on the main thread."
             /// The 50ms sleep gives SwiftUI a full render cycle to process the tab switch before the route is pushed.
             /// It's short enough that the user won't notice any delay, but long enough to be reliable.
-            try? await Task.sleep(for: .milliseconds(50))
+            try? await Task.sleep(for: deepLinkDelay)
             navigate(to: route)
         }
         
