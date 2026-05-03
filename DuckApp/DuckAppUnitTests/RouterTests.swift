@@ -300,6 +300,10 @@ struct RouterDeepLinkTests {
 
     @Test @MainActor func deepLink_navigatesAfterDelay() async {
         let router = Router()
+        
+        /// In the real app, the 50ms delay exists because SwiftUI needs time to visually switch tabs before we push a view.
+        /// In tests, there's no SwiftUI rendering happening. There's no tab to switch, no animation to wait for. It's just data: set a property, append to an array.
+        /// So the delay serves no purpose in tests -- it only adds wait time. Setting it to .zero means "skip the wait, just run navigate() immediately." The test is only verifying that the logic works (tab changes + route gets pushed), not that SwiftUI had enough time to animate.
         router.deepLinkDelay = .zero
 
         router.deepLink(to: .settingsTab, route: .detail(item: "Z"))
