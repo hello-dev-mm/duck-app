@@ -8,13 +8,12 @@
 import Foundation
 
 struct NavLink: Hashable, Identifiable {
-    let id = UUID()
+    let id: UUID
     let someString: String
 
-    /// static let samples property that holds the demo data in one place.
     static let samples: [NavLink] = [
-        NavLink(someString: "NavLink 1"),
-        NavLink(someString: "NavLink 2"),
-        NavLink(someString: "NavLink 3")
+        NavLink(id: UUID(), someString: "NavLink 1"),
+        NavLink(id: UUID(), someString: "NavLink 2"),
+        NavLink(id: UUID(), someString: "NavLink 3")
     ]
 }
