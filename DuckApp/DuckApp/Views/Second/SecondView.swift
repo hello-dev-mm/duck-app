@@ -9,11 +9,8 @@ import SwiftUI
 
 struct SecondView: View {
     @Environment(Router.self) private var router
-    let navLinks: [NavLink] = [
-        NavLink(name: "NavLink 1"),
-        NavLink(name: "NavLink 2"),
-        NavLink(name: "NavLink 3")
-    ]
+    /// Takes nav​Links as a parameter (var nav​Links: [​Nav​Link]) instead of hardcoding the array.
+    var navLinks: [NavLink]
     
     var body: some View {
         List {
@@ -41,7 +38,7 @@ struct SecondView: View {
             
             Section("Navigation Links") {
                 ForEach(navLinks) { navLink in
-                    NavigationLink(navLink.name, value: navLink)
+                    NavigationLink(navLink.someString, value: navLink)
                 }
             }
         }

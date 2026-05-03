@@ -36,7 +36,7 @@ struct ContentView: View {
             
             // MARK: Second
             NavigationStack(path: $router.secondTabPath) {
-                SecondView()
+                SecondView(navLinks: NavLink.samples)
                     .navigationDestination(for: AppRoute.self) { route in
                         ViewFactory.buildView(for: route)
                     }
@@ -60,7 +60,7 @@ struct ContentView: View {
                 .environment(router)
         }
         .fullScreenCover(item: $router.presentedCover) { cover in
-            ViewFactory.buildCover(for: cover, router: router)
+            ViewFactory.buildCover(for: cover)
                 .environment(router)
         }
     }

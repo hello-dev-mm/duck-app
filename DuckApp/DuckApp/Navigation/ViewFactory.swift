@@ -14,12 +14,12 @@ struct ViewFactory {
     static func buildView(for route: AppRoute) -> some View {
         switch route {
         case .homeRoute: HomeView()
-        case .secondRoute: SecondView()
+        case .secondRoute: SecondView(navLinks: NavLink.samples)
         case .settingsRoute: SettingsView()
         case .detail(let item): DetailView(item: item)
-        case .forgotPassword:
-            Text("Reset Password Screen")
-                .navigationTitle("Reset")
+        case .sheetDetail:
+            Text("Sheet Detail")
+                .navigationTitle("Sheet Detail")
         }
     }
 
@@ -27,34 +27,17 @@ struct ViewFactory {
     @ViewBuilder
     static func buildSheet(for sheet: AppSheet) -> some View {
         switch sheet {
-        case .login:
-            LoginView()
+        case .appSheet:
+            SheetView()
         }
     }
 
     // MARK: - Build Cover
-    // TODO: - Refactor content into a view
     @ViewBuilder
-    static func buildCover(for cover: AppCover, router: Router) -> some View {
-        @Bindable var router = router
-        NavigationStack(path: $router.coverPath) {
-            Group {
-                switch cover {
-                case .appCover:
-                    VStack {
-                        Text("App Cover Content")
-                        Button("Go Deeper") { router.navigate(to: .detail(item: "Cover Detail")) }
-                    }
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Close") { router.dismiss() }
-                }
-            }
-            .navigationDestination(for: AppRoute.self) { route in
-                ViewFactory.buildView(for: route)
-            }
+    static func buildCover(for cover: AppCover) -> some View {
+        switch cover {
+        case .appCover:
+            CoverView()
         }
     }
 }

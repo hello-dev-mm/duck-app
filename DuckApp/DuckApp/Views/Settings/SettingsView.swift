@@ -12,13 +12,13 @@ struct SettingsView: View {
     
     var body: some View {
         List {            
-            Section("Login Sheet") {
-                Button("Show Login") {
-                    router.showSheet(.login)
+            Section("App Sheet") {
+                Button("Show sheet") {
+                    router.showSheet(.appSheet)
                 }
             }
             
-            Section("Some Cover") {
+            Section("App Cover") {
                 Button("Show Cover") {
                     router.showCover(.appCover)
                 }

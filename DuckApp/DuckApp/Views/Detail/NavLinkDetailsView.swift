@@ -11,6 +11,6 @@ struct NavLinkDetailsView: View {
     let navLink: NavLink
     
     var body: some View {
-        Text("Details for \(navLink.name)")
+        Text("Details for \(navLink.someString)")
     }
 }

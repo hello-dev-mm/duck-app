@@ -8,7 +8,7 @@
 // MARK: - Tabs
 /// AppTab is the physical structure
 /// It tells the TabView which screen is currently active.
-/// Its state is a single value (.homeTab, .mainTab, or .settingsTab). Without this, the app wouldn't know which tab to highlight in blue or which "root" view to show when we click the bottom bar.
+/// Its state is a single value (.homeTab, .secondTab, or .settingsTab). Without this, the app wouldn't know which tab to highlight in blue or which "root" view to show when we click the bottom bar.
 enum AppTab {
     case homeTab, secondTab, settingsTab
 }
@@ -19,17 +19,17 @@ enum AppTab {
 enum AppRoute: Hashable {
     case homeRoute, secondRoute, settingsRoute
     case detail(item: String)
-    case forgotPassword
+    case sheetDetail
 }
 
 // MARK: - Sheets
 enum AppSheet: Identifiable, Hashable {
-    case login
+    case appSheet
     
     /// Required for Identifiable
     var id: String {
         switch self {
-        case .login: return "Login"
+        case .appSheet: return "App Sheet"
         }
     }
 }

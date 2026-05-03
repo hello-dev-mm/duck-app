@@ -25,12 +25,11 @@ class Router {
     
     /// Navigation Paths for every tab: It allows each tab to maintain its own independent navigation stack. If a user drills deep into the homeTab and then switches to settingsTab, their position in the Home tab is preserved.
     var homeTabPath = NavigationPath()
-    var firstTabPath = NavigationPath()
     var secondTabPath = NavigationPath()
     var settingsTabPath = NavigationPath()
     
     /// Navigation Path for the sheet
-    var loginPath = NavigationPath()
+    var sheetPath = NavigationPath()
     
     /// Navigation Path for the full screen cover
     var coverPath = NavigationPath()
@@ -42,7 +41,7 @@ class Router {
             if presentedCover != nil { return coverPath }
             
             /// Priority 2: If a sheet is open, navigation happens there
-            if presentedSheet != nil { return loginPath }
+            if presentedSheet != nil { return sheetPath }
             
             /// Priority 3: Standard Tabs
             switch selectedTab {
@@ -58,7 +57,7 @@ class Router {
             }
             
             if presentedSheet != nil {
-                loginPath = newValue
+                sheetPath = newValue
                 return
             }
             
@@ -86,14 +85,22 @@ class Router {
     }
     
     /// Switches to a specific tab and then pushes a new route onto that tab's stack.
+    /// SwiftUI doesn't switch tabs instantly. It schedules a UI update.
+    /// If navigate runs before SwiftUI has finished processing the tab switch, the navigation path might not be wired up yet, and the push can get lost.
     func deepLink(to tab: AppTab, route: AppRoute) {
         selectedTab = tab
-        
-        /// Use Task @MainActor to ensure the UI has processed the tab switch before we try to append to the new tab's path.
-        Task { @MainActor in
-            /// Wait for a tiny fraction of a second (optional but smoother)
+
+        /// Without Task both lines run in the same render cycle. SwiftUI hasn't processed the tab switch yet when navigate fires.
+        Task { @MainActor in /// @​Main​Actor is Swift's way of saying "this code must run on the main thread."
+            /// The 50ms sleep gives SwiftUI a full render cycle to process the tab switch before the route is pushed.
+            /// It's short enough that the user won't notice any delay, but long enough to be reliable.
+            try? await Task.sleep(for: .milliseconds(50))
             navigate(to: route)
         }
+        
+        /// Task = "schedule this for later" (not "run on another thread")
+        /// @MainActor in = "and make sure 'later' still means the main thread"
+        /// sleep = "wait long enough for SwiftUI to finish the tab switch"
     }
     
     /// Presents a sheet
@@ -106,12 +113,22 @@ class Router {
         presentedCover = cover
     }
     
-    /// Dismisses a sheet or cover
-    /// In a robust Router, dismiss() acts as a state reset. Because SwiftUI sheets and covers are driven by item identity (presentedSheet and presentedCover), setting them to nil tells SwiftUI to remove them from the screen.
+    /// Dismisses the topmost presented layer (cover first, then sheet).
     func dismiss() {
+        if presentedCover != nil {
+            dismissCover()
+        } else if presentedSheet != nil {
+            dismissSheet()
+        }
+    }
+
+    func dismissSheet() {
         presentedSheet = nil
+        sheetPath = NavigationPath()
+    }
+
+    func dismissCover() {
         presentedCover = nil
-        loginPath = NavigationPath()
         coverPath = NavigationPath()
     }
     
