@@ -11,9 +11,7 @@ struct CoverView: View {
     @Environment(Router.self) private var router
 
     var body: some View {
-        @Bindable var router = router
-
-        NavigationStack(path: $router.coverPath) {
+        NavigationStack(path: router.coverPathBinding) {
             VStack {
                 Text("App Cover Content")
                 Button("Go Deeper") { router.navigate(to: .detail(item: "Cover Detail")) }

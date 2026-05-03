@@ -16,26 +16,67 @@ import SwiftUI
 
 @Observable
 class Router {
-    /// Tracks which tab the user is currently looking at.
-    var selectedTab: AppTab = .homeTab
-    /// Tracks which sheet is presented.
-    var presentedSheet: AppSheet?
-    /// Tracks which cover is presented.
-    var presentedCover: AppCover?
-    
-    /// Navigation Paths for every tab: It allows each tab to maintain its own independent navigation stack. If a user drills deep into the homeTab and then switches to settingsTab, their position in the Home tab is preserved.
-    var homeTabPath = NavigationPath()
-    var secondTabPath = NavigationPath()
-    var settingsTabPath = NavigationPath()
-    
-    /// Navigation Path for the sheet
-    var sheetPath = NavigationPath()
-    
-    /// Navigation Path for the full screen cover
-    var coverPath = NavigationPath()
+    /// All state properties are private(set) -- views can read them but can't write to them directly
+    private(set) var selectedTab: AppTab = .homeTab
+    private(set) var presentedSheet: AppSheet?
+    private(set) var presentedCover: AppCover?
 
-    /// Delay before pushing a route after a tab switch. Injectable for testing.
+    private(set) var homeTabPath = NavigationPath()
+    private(set) var secondTabPath = NavigationPath()
+    private(set) var settingsTabPath = NavigationPath()
+    private(set) var sheetPath = NavigationPath()
+    private(set) var coverPath = NavigationPath()
+
     var deepLinkDelay: Duration = .milliseconds(50)
+
+    // MARK: - Bindings for SwiftUI
+    /// Each property has a matching Binding computed property that SwiftUI uses for two-way communication
+    /// The bindings work because they're defined inside the Router class, so they have access to the private setters
+    
+    /// This is a computed property so it doesn't store anything.
+    /// It creates a new Binding​<​App​Tab> every time it's accessed.
+    /// Binding​<​App​Tab> is a SwiftUI type that provides two-way access to an App​Tab value.
+    var selectedTabBinding: Binding<AppTab> {
+        /// Creates a Binding by providing two closures: one for reading, one for writing.
+        Binding(
+            get: { self.selectedTab },
+            set: { self.selectedTab = $0 }
+        )
+    }
+    
+    /// 1. User taps "Settings" tab
+    /// 2. Tab​View calls the binding's set closure with .settings​Tab
+    /// 3. The closure sets self​.selected​Tab = .settings​Tab
+    /// 4. @​Observable notices the change
+    /// 5. SwiftUI re-renders the views
+
+    var presentedSheetBinding: Binding<AppSheet?> {
+        Binding(get: { self.presentedSheet }, set: { self.presentedSheet = $0 })
+    }
+
+    var presentedCoverBinding: Binding<AppCover?> {
+        Binding(get: { self.presentedCover }, set: { self.presentedCover = $0 })
+    }
+
+    var homeTabPathBinding: Binding<NavigationPath> {
+        Binding(get: { self.homeTabPath }, set: { self.homeTabPath = $0 })
+    }
+
+    var secondTabPathBinding: Binding<NavigationPath> {
+        Binding(get: { self.secondTabPath }, set: { self.secondTabPath = $0 })
+    }
+
+    var settingsTabPathBinding: Binding<NavigationPath> {
+        Binding(get: { self.settingsTabPath }, set: { self.settingsTabPath = $0 })
+    }
+
+    var sheetPathBinding: Binding<NavigationPath> {
+        Binding(get: { self.sheetPath }, set: { self.sheetPath = $0 })
+    }
+
+    var coverPathBinding: Binding<NavigationPath> {
+        Binding(get: { self.coverPath }, set: { self.coverPath = $0 })
+    }
     
     /// Helper to get the path for the currently active tab
     private var currentPath: NavigationPath {

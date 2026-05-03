@@ -11,9 +11,7 @@ struct SheetView: View {
     @Environment(Router.self) private var router
     
     var body: some View {
-        @Bindable var router = router
-        
-        NavigationStack(path: $router.sheetPath) {
+        NavigationStack(path: router.sheetPathBinding) {
             VStack(spacing: 20) {
                 Button("Do something") {
                     router.navigate(to: .sheetDetail)
