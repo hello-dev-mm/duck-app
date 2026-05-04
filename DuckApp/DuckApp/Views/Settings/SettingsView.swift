@@ -16,12 +16,14 @@ struct SettingsView: View {
                 Button("Show sheet") {
                     router.showSheet(.appSheet)
                 }
+                .accessibilityIdentifier(AccessibilityID.Settings.showSheet)
             }
-            
+
             Section("App Cover") {
                 Button("Show Cover") {
                     router.showCover(.appCover)
                 }
+                .accessibilityIdentifier(AccessibilityID.Settings.showCover)
             }
         }
         .navigationTitle("Settings View")

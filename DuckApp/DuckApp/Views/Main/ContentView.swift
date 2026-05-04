@@ -21,6 +21,8 @@ struct ContentView: View {
             }
             .tag(AppTab.homeTab)
             .tabItem { Label("Home", systemImage: "house") }
+            /// .accessibilityIdentifier(AccessibilityID.Tab.home)
+            /// .accessibility​Identifier on a Navigation​Stack doesn't propagate to the tab bar button. SwiftUI names tab bar buttons after their Label text.
 
             NavigationStack(path: router.secondTabPathBinding) {
                 SecondView(navLinks: NavLink.samples)

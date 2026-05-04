@@ -18,27 +18,32 @@ struct SecondView: View {
                 Button("Go To Home Tab") {
                     router.switchToTab(.homeTab)
                 }
-                
+                .accessibilityIdentifier(AccessibilityID.Second.switchToHomeTab)
+
                 Button("Go To Settings Tab") {
                     router.switchToTab(.settingsTab)
                 }
+                .accessibilityIdentifier(AccessibilityID.Second.switchToSettingsTab)
             }
-            
+
             Section("Push Detail View") {
                 Button("Push Detail View C") {
                     router.navigate(to: .detail(item: "C"))
                 }
+                .accessibilityIdentifier(AccessibilityID.Second.pushDetailC)
             }
-            
+
             Section("Deep Link") {
                 Button("Jump to Settings > Detail X") {
                     router.deepLink(to: .settingsTab, route: .detail(item: "X"))
                 }
+                .accessibilityIdentifier(AccessibilityID.Second.deepLinkSettingsX)
             }
-            
+
             Section("Navigation Links") {
                 ForEach(navLinks) { navLink in
                     NavigationLink(navLink.someString, value: navLink)
+                        .accessibilityIdentifier(AccessibilityID.Second.navLinkCell(navLink.id))
                 }
             }
         }

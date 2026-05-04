@@ -22,23 +22,27 @@ struct DetailView: View {
                 Button("Push Detail View \(nextItemName)") {
                     router.navigate(to: .detail(item: nextItemName))
                 }
+                .accessibilityIdentifier(AccessibilityID.Detail.pushNext)
             }
-            
+
             Section("Deep Link") {
                 Button("Jump to Settings > Detail V") {
                     router.deepLink(to: .settingsTab, route: .detail(item: "V"))
                 }
+                .accessibilityIdentifier(AccessibilityID.Detail.deepLinkSettingsV)
             }
-            
+
             Section("Pop Controls") {
                 Button("Go Back One Level") {
                     router.goBack()
                 }
-                
+                .accessibilityIdentifier(AccessibilityID.Detail.goBack)
+
                 Button("Back to Root") {
                     router.popToRoot()
                 }
                 .foregroundStyle(.red)
+                .accessibilityIdentifier(AccessibilityID.Detail.popToRoot)
             }
         }
         .navigationTitle("Detail \(item)")

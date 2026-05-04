@@ -9,8 +9,8 @@ import Testing
 import SwiftUI
 @testable import DuckApp
 
-// MARK: - Tab Switching
-struct RouterTabTests {
+struct RouterTests {
+    // MARK: - Tab Switching
     @Test func defaultTab_isHomeTab() {
         let router = Router()
 
@@ -24,10 +24,8 @@ struct RouterTabTests {
 
         #expect(router.selectedTab == .settingsTab)
     }
-}
 
-// MARK: - Navigation
-struct RouterNavigationTests {
+    // MARK: - Navigation
     @Test func navigate_appendsToCurrentTabPath() {
         let router = Router()
 
@@ -64,10 +62,8 @@ struct RouterNavigationTests {
 
         #expect(router.currentPathCount == 2)
     }
-}
 
-// MARK: - Go Back
-struct RouterGoBackTests {
+    // MARK: - Go Back
     @Test func goBack_removesLastRoute() {
         let router = Router()
         router.navigate(to: .detail(item: "A"))
@@ -85,10 +81,8 @@ struct RouterGoBackTests {
 
         #expect(router.homeTabPath.count == 0)
     }
-}
 
-// MARK: - Pop to Root
-struct RouterPopToRootTests {
+    // MARK: - Pop to Root
     @Test func popToRoot_clearsEntirePath() {
         let router = Router()
         router.navigate(to: .detail(item: "A"))
@@ -109,10 +103,8 @@ struct RouterPopToRootTests {
 
         #expect(router.secondTabPath.count == 0)
     }
-}
 
-// MARK: - Sheet Presentation
-struct RouterSheetTests {
+    // MARK: - Sheet Presentation
     @Test func showSheet_presentsSheet() {
         let router = Router()
 
@@ -149,10 +141,8 @@ struct RouterSheetTests {
         #expect(router.sheetPath.count == 1)
         #expect(router.homeTabPath.count == 0)
     }
-}
 
-// MARK: - Cover Presentation
-struct RouterCoverTests {
+    // MARK: - Cover Presentation
     @Test func showCover_presentsCover() {
         let router = Router()
 
@@ -189,10 +179,8 @@ struct RouterCoverTests {
         #expect(router.coverPath.count == 1)
         #expect(router.homeTabPath.count == 0)
     }
-}
 
-// MARK: - Dismiss Priority
-struct RouterDismissTests {
+    // MARK: - Dismiss Priority
     @Test func dismiss_withOnlySheet_dismissesSheet() {
         let router = Router()
         router.showSheet(.appSheet)
@@ -242,10 +230,8 @@ struct RouterDismissTests {
         #expect(router.presentedSheet == nil)
         #expect(router.presentedCover == nil)
     }
-}
 
-// MARK: - Navigation Priority (Cover > Sheet > Tab)
-struct RouterNavigationPriorityTests {
+    // MARK: - Navigation Priority (Cover > Sheet > Tab)
     @Test func navigate_coverTakesPriorityOverSheet() {
         let router = Router()
         router.showSheet(.appSheet)
@@ -286,10 +272,8 @@ struct RouterNavigationPriorityTests {
 
         #expect(router.sheetPath.count == 0)
     }
-}
 
-// MARK: - Deep Link
-struct RouterDeepLinkTests {
+    // MARK: - Deep Link
     @Test func deepLink_switchesTab() {
         let router = Router()
 
@@ -298,9 +282,9 @@ struct RouterDeepLinkTests {
         #expect(router.selectedTab == .settingsTab)
     }
 
-    @Test @MainActor func deepLink_navigatesAfterDelay() async {
+    @Test @MainActor func deepLink_navigatesAfterDelay() async throws {
         let router = Router()
-        
+
         /// In the real app, the 50ms delay exists because SwiftUI needs time to visually switch tabs before we push a view.
         /// In tests, there's no SwiftUI rendering happening. There's no tab to switch, no animation to wait for. It's just data: set a property, append to an array.
         /// So the delay serves no purpose in tests -- it only adds wait time. Setting it to .zero means "skip the wait, just run navigate() immediately." The test is only verifying that the logic works (tab changes + route gets pushed), not that SwiftUI had enough time to animate.
@@ -315,21 +299,25 @@ struct RouterDeepLinkTests {
         /// 3. await ​Task​.yield() says "let that task go first"
         /// 4. The navigate task runs
         /// 5. Then we check if it worked
-        
+
         /// Any async function runs inside a task automatically -- Swift creates one behind the scenes.
         /// You don't see a Task { } wrapper because the Swift Testing framework handles that for you when it sees async on the test function.
         /// So there are two tasks in play:
         /// Implicit task -- created by Swift Testing to run your async test function
         /// Explicit task -- the Task { @​Main​Actor in } you wrote inside deep​Link()
         /// await ​Task​.yield() pauses the implicit one so the explicit one can run.
+
+//        await Task.yield()
         
-        await Task.yield()
+        /// Task​.yield() says "I'll step aside for one scheduling cycle." But that's not always enough because the deepLink task has multiple steps to complete.
+        /// A single yield() might only get through all steps. The scheduler doesn't guarantee it will run the deepLink task to completion before returning control to your test.
+        /// Task​.sleep(for: .milliseconds(10)) works because it gives the scheduler 10ms of real time to finish all the steps, not just one. It's a blunt tool but a reliable one.
+        try await Task.sleep(for: .milliseconds(10))
+
         #expect(router.settingsTabPath.count == 1)
     }
-}
 
-// MARK: - Tab Independence
-struct RouterTabIndependenceTests {
+    // MARK: - Tab Independence
     @Test func tabPaths_areIndependent() {
         let router = Router()
 

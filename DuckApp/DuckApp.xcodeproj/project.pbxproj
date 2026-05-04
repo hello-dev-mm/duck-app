@@ -14,22 +14,48 @@
 			remoteGlobalIDString = BC8ACFEE2FA4B09600A1658A;
 			remoteInfo = DuckApp;
 		};
+		BCC3FB032FA8A03F00CFD637 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC8ACFE72FA4B09600A1658A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BC8ACFEE2FA4B09600A1658A;
+			remoteInfo = DuckApp;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		BC8ACFEF2FA4B09600A1658A /* DuckApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DuckApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC9F057B2FA76B1100592924 /* DuckAppUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DuckAppUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCC3FAFD2FA8A03F00CFD637 /* DuckAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DuckAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		BCC3FB0D2FA8AE2300CFD637 /* Exceptions for "DuckApp" folder in "DuckAppUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AccessibilityID.swift,
+			);
+			target = BCC3FAFC2FA8A03F00CFD637 /* DuckAppUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BC8ACFF12FA4B09600A1658A /* DuckApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BCC3FB0D2FA8AE2300CFD637 /* Exceptions for "DuckApp" folder in "DuckAppUITests" target */,
+			);
 			path = DuckApp;
 			sourceTree = "<group>";
 		};
 		BC9F057C2FA76B1100592924 /* DuckAppUnitTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = DuckAppUnitTests;
+			sourceTree = "<group>";
+		};
+		BCC3FAFE2FA8A03F00CFD637 /* DuckAppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DuckAppUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -49,6 +75,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BCC3FAFA2FA8A03F00CFD637 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -57,6 +90,7 @@
 			children = (
 				BC8ACFF12FA4B09600A1658A /* DuckApp */,
 				BC9F057C2FA76B1100592924 /* DuckAppUnitTests */,
+				BCC3FAFE2FA8A03F00CFD637 /* DuckAppUITests */,
 				BC8ACFF02FA4B09600A1658A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,6 +100,7 @@
 			children = (
 				BC8ACFEF2FA4B09600A1658A /* DuckApp.app */,
 				BC9F057B2FA76B1100592924 /* DuckAppUnitTests.xctest */,
+				BCC3FAFD2FA8A03F00CFD637 /* DuckAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,6 +153,29 @@
 			productReference = BC9F057B2FA76B1100592924 /* DuckAppUnitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		BCC3FAFC2FA8A03F00CFD637 /* DuckAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCC3FB052FA8A03F00CFD637 /* Build configuration list for PBXNativeTarget "DuckAppUITests" */;
+			buildPhases = (
+				BCC3FAF92FA8A03F00CFD637 /* Sources */,
+				BCC3FAFA2FA8A03F00CFD637 /* Frameworks */,
+				BCC3FAFB2FA8A03F00CFD637 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BCC3FB042FA8A03F00CFD637 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				BCC3FAFE2FA8A03F00CFD637 /* DuckAppUITests */,
+			);
+			name = DuckAppUITests;
+			packageProductDependencies = (
+			);
+			productName = DuckAppUITests;
+			productReference = BCC3FAFD2FA8A03F00CFD637 /* DuckAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -132,6 +190,10 @@
 						CreatedOnToolsVersion = 26.4.1;
 					};
 					BC9F057A2FA76B1100592924 = {
+						CreatedOnToolsVersion = 26.4.1;
+						TestTargetID = BC8ACFEE2FA4B09600A1658A;
+					};
+					BCC3FAFC2FA8A03F00CFD637 = {
 						CreatedOnToolsVersion = 26.4.1;
 						TestTargetID = BC8ACFEE2FA4B09600A1658A;
 					};
@@ -153,6 +215,7 @@
 			targets = (
 				BC8ACFEE2FA4B09600A1658A /* DuckApp */,
 				BC9F057A2FA76B1100592924 /* DuckAppUnitTests */,
+				BCC3FAFC2FA8A03F00CFD637 /* DuckAppUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -166,6 +229,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		BC9F05792FA76B1100592924 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BCC3FAFB2FA8A03F00CFD637 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -189,6 +259,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BCC3FAF92FA8A03F00CFD637 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -200,6 +277,11 @@
 			);
 			target = BC8ACFEE2FA4B09600A1658A /* DuckApp */;
 			targetProxy = BC9F057F2FA76B1100592924 /* PBXContainerItemProxy */;
+		};
+		BCC3FB042FA8A03F00CFD637 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BC8ACFEE2FA4B09600A1658A /* DuckApp */;
+			targetProxy = BCC3FB032FA8A03F00CFD637 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -461,6 +543,49 @@
 			};
 			name = Release;
 		};
+		BCC3FB062FA8A03F00CFD637 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mm.DuckAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DuckApp;
+			};
+			name = Debug;
+		};
+		BCC3FB072FA8A03F00CFD637 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mm.DuckAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DuckApp;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -487,6 +612,15 @@
 			buildConfigurations = (
 				BC9F05822FA76B1100592924 /* Debug */,
 				BC9F05832FA76B1100592924 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BCC3FB052FA8A03F00CFD637 /* Build configuration list for PBXNativeTarget "DuckAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCC3FB062FA8A03F00CFD637 /* Debug */,
+				BCC3FB072FA8A03F00CFD637 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

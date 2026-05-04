@@ -16,7 +16,10 @@ struct SheetView: View {
                 Button("Do something") {
                     router.navigate(to: .sheetDetail)
                 }
+                .accessibilityIdentifier(AccessibilityID.Sheet.doSomething)
+
                 Button("Done") { router.dismiss() }
+                    .accessibilityIdentifier(AccessibilityID.Sheet.done)
             }
             .navigationTitle("Sheet View")
             .navigationDestination(for: AppRoute.self) { route in
