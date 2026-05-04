@@ -7,9 +7,11 @@
 
 import XCTest
 
+@MainActor
 final class PushPopUITests: XCTestCase {
 
     // MARK: - Setup
+    
     private var app: XCUIApplication!
     
     override func setUpWithError() throws {
@@ -19,16 +21,54 @@ final class PushPopUITests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        // TODO: - Question: What should we put here?
+        app = nil
     }
 
-    func testExample() throws {
-       
+    // MARK: - Tests
+    
+    func test_onHome_pushDetailView_verifyDetailAppears() {
+        let detailTitle = app.navigationBars["Detail A"]
+
+        app.buttons[AccessibilityID.Home.pushDetailA].tap()
+        
+        XCTAssertTrue(detailTitle.waitForExistence(timeout: 2))
     }
     
-//    • Tap "Push Detail View A" on Home, verify "Detail A" appears
-//    • From Detail A, tap push next, verify "Detail A2" appears
-//    • Tap go back, verify you return to "Detail A"
-//    • Tap pop to root, verify you return to "Home View"
-//    • Tap go back on the first detail level, verify you return to "Home View"
+    func test_fromDetailView_tapPopToRoot_verifyHomeAppears() {
+        let homeTitle = app.navigationBars["Home View"]
+
+        app.buttons[AccessibilityID.Home.pushDetailA].tap()
+        app.buttons[AccessibilityID.Detail.popToRoot].tap()
+        
+        XCTAssertTrue(homeTitle.waitForExistence(timeout: 2))
+    }
+    
+    func test_fromDetailView_pushSubDetailView_verifySubDetailAppears() {
+        let subDetailTitle = app.navigationBars["Detail A2"]
+
+        app.buttons[AccessibilityID.Home.pushDetailA].tap()
+        app.buttons[AccessibilityID.Detail.pushNext].tap()
+        
+        XCTAssertTrue(subDetailTitle.waitForExistence(timeout: 2))
+    }
+    
+    func test_fromSubDetailView_tapGoBack_verifyDetailAppears() {
+        let detailTitle = app.navigationBars["Detail A"]
+
+        app.buttons[AccessibilityID.Home.pushDetailA].tap()
+        app.buttons[AccessibilityID.Detail.pushNext].tap()
+        app.buttons[AccessibilityID.Detail.goBack].tap()
+        
+        XCTAssertTrue(detailTitle.waitForExistence(timeout: 2))
+    }
+    
+    func test_fromSubDetailView_tapPopToRoot_verifyHomeAppears() {
+        let homeTitle = app.navigationBars["Home View"]
+
+        app.buttons[AccessibilityID.Home.pushDetailA].tap()
+        app.buttons[AccessibilityID.Detail.pushNext].tap()
+        app.buttons[AccessibilityID.Detail.popToRoot].tap()
+        
+        XCTAssertTrue(homeTitle.waitForExistence(timeout: 2))
+    }
 }

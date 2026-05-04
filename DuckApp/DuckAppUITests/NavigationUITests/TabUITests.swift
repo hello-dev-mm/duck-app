@@ -7,9 +7,11 @@
 
 import XCTest
 
+@MainActor
 final class TabUITests: XCTestCase {
 
     // MARK: - Setup
+    
     /// Proxy for an application that may or may not be running.
     private var app: XCUIApplication!
 
@@ -18,11 +20,14 @@ final class TabUITests: XCTestCase {
         app = XCUIApplication() /// app running in a simulator
         app.launch() /// starts the app fresh before every test
     }
+    
+    override func tearDownWithError() throws {
+        app = nil
+    }
 
     // MARK: - Tests
 
-    @MainActor
-    func testHomeTab_isVisibleOnLaunch() {
+    func test_homeTab_isVisibleOnLaunch() {
         let homeTitle = app.navigationBars["Home View"]
         
         /// UI transitions (tab switches, navigation pushes) aren't instant, they animate.
@@ -31,8 +36,7 @@ final class TabUITests: XCTestCase {
         XCTAssertTrue(homeTitle.waitForExistence(timeout: 2))
     }
 
-    @MainActor
-    func testTappingSecondTab_showsSecondView() {
+    func test_tappingSecondTab_showsSecondView() {
         let secondTitle = app.navigationBars["Second View"]
 
         app.tabBars.buttons[AccessibilityID.Tab.second].tap()
@@ -40,8 +44,7 @@ final class TabUITests: XCTestCase {
         XCTAssertTrue(secondTitle.waitForExistence(timeout: 2))
     }
     
-    @MainActor
-    func testTappingSettingsTab_showsSettingsView() {
+    func test_tappingSettingsTab_showsSettingsView() {
         let settingsTitle = app.navigationBars["Settings View"]
         
         app.tabBars.buttons[AccessibilityID.Tab.settings].tap()
@@ -49,8 +52,41 @@ final class TabUITests: XCTestCase {
         XCTAssertTrue(settingsTitle.waitForExistence(timeout: 2))
     }
 
-    @MainActor
-    func testTabState_isPreservedWhenSwitching() {
+    func test_fromHome_tapSwitchToSecondTab_showsSecondView() {
+        let secondTitle = app.navigationBars["Second View"]
+
+        app.buttons[AccessibilityID.Home.switchToSecondTab].tap()
+
+        XCTAssertTrue(secondTitle.waitForExistence(timeout: 2))
+    }
+
+    func test_fromHome_tapSwitchToSettingsTab_showsSettingsView() {
+        let settingsTitle = app.navigationBars["Settings View"]
+
+        app.buttons[AccessibilityID.Home.switchToSettingsTab].tap()
+
+        XCTAssertTrue(settingsTitle.waitForExistence(timeout: 2))
+    }
+
+    func test_fromSecond_tapSwitchToHomeTab_showsHomeView() {
+        let homeTitle = app.navigationBars["Home View"]
+
+        app.tabBars.buttons[AccessibilityID.Tab.second].tap()
+        app.buttons[AccessibilityID.Second.switchToHomeTab].tap()
+
+        XCTAssertTrue(homeTitle.waitForExistence(timeout: 2))
+    }
+
+    func test_fromSecond_tapSwitchToSettingsTab_showsSettingsView() {
+        let settingsTitle = app.navigationBars["Settings View"]
+
+        app.tabBars.buttons[AccessibilityID.Tab.second].tap()
+        app.buttons[AccessibilityID.Second.switchToSettingsTab].tap()
+
+        XCTAssertTrue(settingsTitle.waitForExistence(timeout: 2))
+    }
+
+    func test_tabState_isPreservedWhenSwitching() {
         let detailTitleA = app.navigationBars["Detail A"]
         let settingsTitle = app.navigationBars["Settings View"]
         

@@ -7,9 +7,11 @@
 
 import XCTest
 
+@MainActor
 final class DeepLinkUITests: XCTestCase {
 
     // MARK: - Setup
+    
     private var app: XCUIApplication!
     
     override func setUpWithError() throws {
@@ -19,14 +21,44 @@ final class DeepLinkUITests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        // TODO: - Question: What should we put here?
+        app = nil
     }
 
-    func testExample() throws {
-       
+    // MARK: - Tests
+    
+    func test_fromHomeTab_tapDeeplink_verifySettingsTabActive() {
+        app.buttons[AccessibilityID.Home.deepLinkSettingsZ].tap()
+
+        let settingsTab = app.tabBars.buttons[AccessibilityID.Tab.settings]
+        
+        XCTAssertTrue(settingsTab.waitForExistence(timeout: 2))
+        XCTAssertTrue(settingsTab.isSelected)
     }
     
-//    • From Home, tap "Jump to Settings > Detail Z", verify Settings tab is active and "Detail Z" appears
-//    • From Second tab, tap "Jump to Settings > Detail X", verify "Detail X" appears
-//    • From a Detail view, tap "Jump to Settings > Detail V", verify "Detail V" appears
+    func test_fromHomeTab_deepLinkToSettingsDetailZ_verifyDetailZAppears() {
+        let detailZTitle = app.navigationBars["Detail Z"]
+
+        app.buttons[AccessibilityID.Home.deepLinkSettingsZ].tap()
+
+        XCTAssertTrue(detailZTitle.waitForExistence(timeout: 2))
+    }
+    
+    func test_fromSecondTab_deepLinkToSettingsDetailX_verifyDetailXAppears() {
+        let detailXTitle = app.navigationBars["Detail X"]
+
+        app.tabBars.buttons[AccessibilityID.Tab.second].tap()
+        app.buttons[AccessibilityID.Second.deepLinkSettingsX].tap()
+
+        XCTAssertTrue(detailXTitle.waitForExistence(timeout: 2))
+    }
+    
+    func test_fromDetailView_tapDeeplink_verifyDeepLinkTitleAppears() {
+        let detailVTitle = app.navigationBars["Detail V"]
+
+        /// XCUI's tap() implicitly waits for the element to exist and be hittable before tapping.
+        app.buttons[AccessibilityID.Home.pushDetailA].tap()
+        app.buttons[AccessibilityID.Detail.deepLinkSettingsV].tap()
+
+        XCTAssertTrue(detailVTitle.waitForExistence(timeout: 2))
+    }
 }

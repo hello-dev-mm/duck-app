@@ -7,9 +7,11 @@
 
 import XCTest
 
+@MainActor
 final class NavLinkUITests: XCTestCase {
 
     // MARK: - Setup
+    
     private var app: XCUIApplication!
     
     override func setUpWithError() throws {
@@ -19,14 +21,47 @@ final class NavLinkUITests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        // TODO: - Question: What should we put here?
+        app = nil
     }
 
-    func testExample() throws {
-       
-    }
+    // MARK: - Tests
     
-//    • On Second tab, tap "NavLink 1", verify "Details for NavLink 1" appears
-//    • Tap back, verify you return to "Second View"
-//    • Tap "NavLink 2", verify "Details for NavLink 2" appears
+    func test_fromSecondTab_tapNavLink1_verifyTitleAppears() {
+        let navLinkTitle = app.staticTexts["Details for NavLink 1"]
+
+        app.tabBars.buttons[AccessibilityID.Tab.second].tap()
+        app.buttons[AccessibilityID.Second.navLinkCell("NavLink 1")].tap()
+
+        XCTAssertTrue(navLinkTitle.waitForExistence(timeout: 2))
+    }
+
+    func test_fromNavLink1_tapBack_verifySecondViewAppears() {
+        let secondTitle = app.navigationBars["Second View"]
+
+        app.tabBars.buttons[AccessibilityID.Tab.second].tap()
+        app.buttons[AccessibilityID.Second.navLinkCell("NavLink 1")].tap()
+        
+        /// tap the back button by its label. SwiftUI's back button label defaults to the previous screen's navigation title:
+        app.navigationBars.buttons["Second View"].tap()
+        
+        XCTAssertTrue(secondTitle.waitForExistence(timeout: 2))
+    }
+
+    func test_fromSecondTab_tapNavLink2_verifyTitleAppears() {
+        let navLinkTitle = app.staticTexts["Details for NavLink 2"]
+
+        app.tabBars.buttons[AccessibilityID.Tab.second].tap()
+        app.buttons[AccessibilityID.Second.navLinkCell("NavLink 2")].tap()
+
+        XCTAssertTrue(navLinkTitle.waitForExistence(timeout: 2))
+    }
+
+    func test_fromSecondTab_tapNavLink3_verifyTitleAppears() {
+        let navLinkTitle = app.staticTexts["Details for NavLink 3"]
+
+        app.tabBars.buttons[AccessibilityID.Tab.second].tap()
+        app.buttons[AccessibilityID.Second.navLinkCell("NavLink 3")].tap()
+
+        XCTAssertTrue(navLinkTitle.waitForExistence(timeout: 2))
+    }
 }

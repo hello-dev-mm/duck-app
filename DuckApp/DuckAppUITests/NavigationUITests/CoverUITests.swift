@@ -7,9 +7,11 @@
 
 import XCTest
 
+@MainActor
 final class CoverUITests: XCTestCase {
     
     // MARK: - Setup
+    
     private var app: XCUIApplication!
     
     override func setUpWithError() throws {
@@ -19,10 +21,12 @@ final class CoverUITests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        // TODO: - Question: What should we put here?
+        app = nil
     }
     
-    func test_fromSettings_tapShowcover_verifyAppCoverAppears() throws {
+    // MARK: - Tests
+    
+    func test_fromSettings_tapShowCover_verifyAppCoverAppears() {
         let coverTextElement = app.staticTexts[AccessibilityID.Cover.text]
         
         app.tabBars.buttons[AccessibilityID.Tab.settings].tap()
@@ -31,8 +35,8 @@ final class CoverUITests: XCTestCase {
         XCTAssertTrue(coverTextElement.waitForExistence(timeout: 2))
     }
     
-    func test_insideCover_tapGoDeeper_verifyDetailCoverAppears() throws {
-        let detailCoverTitle = app.navigationBars["Detail Cover Detail"] // TODO: Accessibility ID, maybe another detail
+    func test_insideCover_tapGoDeeper_verifyDetailCoverAppears() {
+        let detailCoverTitle = app.otherElements[AccessibilityID.Cover.detailTitle]
         
         app.tabBars.buttons[AccessibilityID.Tab.settings].tap()
         app.buttons[AccessibilityID.Settings.showCover].tap()
@@ -41,7 +45,18 @@ final class CoverUITests: XCTestCase {
         XCTAssertTrue(detailCoverTitle.waitForExistence(timeout: 2))
     }
     
-    func test_insideCover_tapClose_verifyCoverDismissedandBackOnSettings() throws {
+    func test_insideCoverDetail_tapBack_verifyCoverRootAppears() {
+        let coverText = app.staticTexts[AccessibilityID.Cover.text]
+
+        app.tabBars.buttons[AccessibilityID.Tab.settings].tap()
+        app.buttons[AccessibilityID.Settings.showCover].tap()
+        app.buttons[AccessibilityID.Cover.goDeeper].tap()
+        app.navigationBars.buttons["Back"].tap()
+
+        XCTAssertTrue(coverText.waitForExistence(timeout: 2))
+    }
+
+    func test_insideCover_tapClose_verifyCoverDismissedAndBackOnSettings() {
         let settingsTitle = app.navigationBars["Settings View"]
         
         app.tabBars.buttons[AccessibilityID.Tab.settings].tap()

@@ -28,7 +28,7 @@ enum AccessibilityID {
         static let switchToSettingsTab = "second.switchToSettingsTab"
         static let pushDetailC = "second.pushDetailC"
         static let deepLinkSettingsX = "second.deepLinkSettingsX"
-        static func navLinkCell(_ id: UUID) -> String { "second.navLink.\(id.uuidString)" }
+        static func navLinkCell(_ name: String) -> String { "second.navLink.\(name)" }
     }
 
     enum Settings {
@@ -52,5 +52,6 @@ enum AccessibilityID {
         static let text = "cover.text"
         static let goDeeper = "cover.goDeeper"
         static let close = "cover.close"
+        static let detailTitle = "cover.detailTitle"
     }
 }

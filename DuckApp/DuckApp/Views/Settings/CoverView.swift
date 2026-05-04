@@ -15,7 +15,7 @@ struct CoverView: View {
             VStack {
                 Text("App Cover Content")
                     .accessibilityIdentifier(AccessibilityID.Cover.text)
-                Button("Go Deeper") { router.navigate(to: .detail(item: "Cover Detail")) }
+                Button("Go Deeper") { router.navigate(to: .detail(item: "E")) }
                     .accessibilityIdentifier(AccessibilityID.Cover.goDeeper)
             }
             .toolbar {
@@ -26,6 +26,7 @@ struct CoverView: View {
             }
             .navigationDestination(for: AppRoute.self) { route in
                 ViewFactory.buildView(for: route)
+                    .accessibilityIdentifier(AccessibilityID.Cover.detailTitle)
             }
         }
     }

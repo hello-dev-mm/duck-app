@@ -7,9 +7,11 @@
 
 import XCTest
 
+@MainActor
 final class SheetUITests: XCTestCase {
 
     // MARK: - Setup
+    
     /// Proxy for an application that may or may not be running.
     private var app: XCUIApplication!
 
@@ -20,10 +22,11 @@ final class SheetUITests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        // TODO: - Question: What should we put here?
+        app = nil
     }
     
-    @MainActor
+    // MARK: - Tests
+    
     func test_fromSettings_tapShowSheet_verifySheetAppears() {
         let sheetTitle = app.navigationBars["Sheet View"]
         
@@ -33,7 +36,6 @@ final class SheetUITests: XCTestCase {
         XCTAssertTrue(sheetTitle.waitForExistence(timeout: 2))
     }
     
-    @MainActor
     func test_insideSheet_tapDoSomething_verifySheetDetailAppears() {
         let sheetDetailTitle = app.navigationBars["Sheet Detail"]
         
@@ -44,7 +46,6 @@ final class SheetUITests: XCTestCase {
         XCTAssertTrue(sheetDetailTitle.waitForExistence(timeout: 2))
     }
     
-    @MainActor
     func test_insideSheet_tapDone_verifySheetIsDismissed_andBackOnSettings() {
         let settingsTitle = app.navigationBars["Settings View"]
 
@@ -53,20 +54,5 @@ final class SheetUITests: XCTestCase {
         app.buttons[AccessibilityID.Sheet.done].tap()
         
         XCTAssertTrue(settingsTitle.waitForExistence(timeout: 2))
-    }
-    
-    @MainActor
-    func test_tabState_isPreservedWhenSwitching() {
-        let detailTitleATitle = app.navigationBars["Detail A"]
-        let settingsTitle = app.navigationBars["Settings View"]
-        
-        app.buttons[AccessibilityID.Home.pushDetailA].tap()
-        XCTAssertTrue(detailTitleATitle.waitForExistence(timeout: 2))
-
-        app.tabBars.buttons[AccessibilityID.Tab.settings].tap()
-        XCTAssertTrue(settingsTitle.waitForExistence(timeout: 2))
-
-        app.tabBars.buttons[AccessibilityID.Tab.home].tap()
-        XCTAssertTrue(detailTitleATitle.waitForExistence(timeout: 2))
     }
 }

@@ -43,7 +43,7 @@ struct SecondView: View {
             Section("Navigation Links") {
                 ForEach(navLinks) { navLink in
                     NavigationLink(navLink.someString, value: navLink)
-                        .accessibilityIdentifier(AccessibilityID.Second.navLinkCell(navLink.id))
+                        .accessibilityIdentifier(AccessibilityID.Second.navLinkCell(navLink.someString))
                 }
             }
         }
